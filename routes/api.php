@@ -18,5 +18,13 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post("/register",[UserController:: class,'register']);
-Route::post("/login",[UserController:: class,'login']);
+Route::post("store",[UserController:: class,'store']);
+Route::post("authenticate",[UserController:: class,'authenticate']);
+Route::get('users/{id}', [UserController::class, 'getUser']);
+Route::put('users/{id}', [UserController::class, 'update']);
+
+Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::get('index', [UserController::class, 'index']);   
+    Route::delete('/delete/{id}', [UserController::class, 'destroy']);
+    
+});
